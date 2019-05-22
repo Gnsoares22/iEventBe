@@ -12,7 +12,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "login";
     private static final int DB_VERSION = 1;
 
-
     public DatabaseHelper(Context context) {
         super(context,DB_NAME, null, DB_VERSION);
     }
