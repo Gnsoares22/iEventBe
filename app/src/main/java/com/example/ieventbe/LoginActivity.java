@@ -72,15 +72,20 @@ public class LoginActivity extends AppCompatActivity {
 
                 } else if(checkemailpassU == true && cu.isChecked()){
 
-                    //acrescentar uma internet para mandar para tela do usuário
+
+                    //acrescentar uma intent para mandar para tela do usuário
+
 
                     Toast.makeText(getApplicationContext(),"Usuário", Toast.LENGTH_SHORT).show();
 
                 }  else if(checkemailpassE == true && ce.isChecked()){
 
+
                     //Incrementar uma intent para mandar para tela da empresa
 
+
                     Toast.makeText(getApplicationContext(),"Empresa", Toast.LENGTH_SHORT).show();
+
 
                 } else if(checkemailpassU == false || checkemailpassE == false){
 
