@@ -64,11 +64,19 @@ public class LoginActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(),"Escolha somente um tipo de usuário", Toast.LENGTH_SHORT).show();
 
-                }  else if(checkemailpassU == true && cu.isChecked()){
+                } else if(ce.isChecked() == false && cu.isChecked() == false){
+
+                    Toast.makeText(getApplicationContext(),"Selecione o tipo de usuário", Toast.LENGTH_SHORT).show();
+
+                } else if(checkemailpassU == true && cu.isChecked()){
+
+                    //acrescentar uma internet para mandar para tela do usuário
 
                     Toast.makeText(getApplicationContext(),"Usuário", Toast.LENGTH_SHORT).show();
 
                 }  else if(checkemailpassE == true && ce.isChecked()){
+
+                    //Incrementar uma intent para mandar para tela da empresa
 
                     Toast.makeText(getApplicationContext(),"Empresa", Toast.LENGTH_SHORT).show();
 
