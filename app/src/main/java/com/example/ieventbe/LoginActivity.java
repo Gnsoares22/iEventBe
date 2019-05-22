@@ -52,6 +52,8 @@ public class LoginActivity extends AppCompatActivity {
                 Boolean checkemailpassU = db.checkemailesenhaUsuario(email,senha);
                 Boolean checkemailpassE = db.checkemailesenhaEmpresa(email,senha);
 
+                //Validação
+
                 if(email.equals("") || email.length() < 4) {
 
                     Toast.makeText(getApplicationContext(),"Preencha o campo email", Toast.LENGTH_SHORT).show();
