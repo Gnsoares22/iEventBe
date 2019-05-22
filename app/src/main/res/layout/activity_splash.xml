@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F27920"
+    tools:context=".SplashScreen.SplashActivity">
+
+
+    <TextView
+        android:id="@+id/texto3"
+        android:layout_width="241dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="-25dp"
+        android:text="Developed by:"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/texto2"
+        app:layout_constraintEnd_toEndOf="@+id/texto2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/texto2"
+        app:layout_constraintTop_toBottomOf="@+id/texto" />
+
+    <ImageView
+        android:id="@+id/logo_ieventbe"
+        android:layout_width="346dp"
+        android:layout_height="208dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="13dp"
+        app:layout_constraintBottom_toTopOf="@+id/texto"
+        app:layout_constraintEnd_toEndOf="@+id/texto"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toStartOf="@+id/texto"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ieventbe3" />
+
+    <TextView
+        android:id="@+id/texto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="150dp"
+        android:text="Automatizando seu evento"
+        android:textColor="#FFFFFF"
+        android:textSize="23dp"
+        android:textStyle="bold"
+        app:fontFamily="@font/baloo"
+        app:layout_constraintBottom_toTopOf="@+id/texto3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/logo_ieventbe" />
+
+    <TextView
+        android:id="@+id/texto2"
+        android:layout_width="226dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="12dp"
+        android:text="EasyPress"
+        android:textColor="#FFFFFF"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/texto3" />
+
+
+</android.support.constraint.ConstraintLayout>
