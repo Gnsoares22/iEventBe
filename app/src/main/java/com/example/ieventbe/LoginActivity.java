@@ -1,5 +1,6 @@
 package com.example.ieventbe;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.Toast;
 
 
 import com.example.ieventbe.BancoBD.DatabaseHelper;
+import com.example.ieventbe.Empresa.EmpresaActivity;
+import com.example.ieventbe.Usuario.UsuarioActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -72,19 +75,21 @@ public class LoginActivity extends AppCompatActivity {
 
                 } else if(checkemailpassU == true && cu.isChecked()){
 
+                    // Manda para a tela do usuário
 
-                    //acrescentar uma intent para mandar para tela do usuário
+                    Intent i = new Intent(LoginActivity.this,UsuarioActivity.class);
+                    startActivity(i);
+                    finish();
 
-
-                    Toast.makeText(getApplicationContext(),"Usuário", Toast.LENGTH_SHORT).show();
 
                 }  else if(checkemailpassE == true && ce.isChecked()){
 
 
-                    //Incrementar uma intent para mandar para tela da empresa
+                    //Manda para a tela da empresa
 
-
-                    Toast.makeText(getApplicationContext(),"Empresa", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(LoginActivity.this, EmpresaActivity.class);
+                    startActivity(i);
+                    finish();
 
 
                 } else if(checkemailpassU == false || checkemailpassE == false){
