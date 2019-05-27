@@ -13,4 +13,9 @@
         <item name="colorControlActivated">@color/colorGreen</item>
     </style>
 
+        <style name="AppTheme.Base"
+            parent="@style/Theme.AppCompat.Light">
+        </style>
+
+
 </resources>
