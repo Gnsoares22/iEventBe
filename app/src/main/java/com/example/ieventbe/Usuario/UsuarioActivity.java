@@ -1,11 +1,16 @@
 package com.example.ieventbe.Usuario;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
+import android.os.RemoteException;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -15,11 +20,29 @@ import android.widget.Toast;
 import com.example.ieventbe.R;
 import com.example.ieventbe.Sobre.SobreUsuarioActivity;
 
-public class UsuarioActivity extends AppCompatActivity {
+import org.altbeacon.beacon.Beacon;
+import org.altbeacon.beacon.BeaconConsumer;
+import org.altbeacon.beacon.BeaconManager;
+import org.altbeacon.beacon.BeaconParser;
+import org.altbeacon.beacon.Identifier;
+import org.altbeacon.beacon.MonitorNotifier;
+import org.altbeacon.beacon.RangeNotifier;
+import org.altbeacon.beacon.Region;
 
-     protected BluetoothAdapter btfAdapter;
+import java.util.ArrayList;
+import java.util.Collection;
+
+public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer {
+
+    //Constante de coordenada do Beacon do tipo iBeacon
+    private static final String IBEACON_LAYOUT = "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24";
+    private static final String BEACON_ID = "003e8c80-ea01-4ebb-b888-78da19df9e55";
+    protected BluetoothAdapter btfAdapter;
+    private BeaconManager beaconManager = null;
+    private Region beaconRegion = null;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,29 +52,40 @@ public class UsuarioActivity extends AppCompatActivity {
 
         //declara as variaveis
 
-        ImageView eventos = (ImageView)findViewById(R.id.eventos);
-        ImageView comousa = (ImageView)findViewById(R.id.funciona);
-        ImageView sobre = (ImageView)findViewById(R.id.sobre);
-        ImageView normasuso = (ImageView)findViewById(R.id.normasuso);
-        ImageView sair = (ImageView)findViewById(R.id.sair);
-        Switch ligablu = (Switch)findViewById(R.id.ligaBlu);
+        ImageView eventos = (ImageView) findViewById(R.id.eventos);
+        ImageView comousa = (ImageView) findViewById(R.id.funciona);
+        ImageView sobre = (ImageView) findViewById(R.id.sobre);
+        ImageView normasuso = (ImageView) findViewById(R.id.normasuso);
+        ImageView sair = (ImageView) findViewById(R.id.sair);
+        Switch ligablu = (Switch) findViewById(R.id.ligaBlu);
+
+        //Metodo do Bluetooth
         btfAdapter = BluetoothAdapter.getDefaultAdapter();
 
-        //Liga e desliga Bluetooth
+        requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1234);
 
+        //variáveis do Beacon
+
+        beaconManager = BeaconManager.getInstanceForApplication(this); //pegando a instancia da aplicação
+        //definindo a coordenada do iBeacon
+        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(IBEACON_LAYOUT));
+        beaconManager.bind(this);
+
+
+        //Liga e desliga Bluetooth
         ligablu.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if (isChecked) {
 
-                        btfAdapter.enable();
-                        Toast.makeText(getApplicationContext(),"Bluetooth Ligado",Toast.LENGTH_SHORT).show();
+                    btfAdapter.enable();
+                    Toast.makeText(getApplicationContext(), "Bluetooth Ligado", Toast.LENGTH_SHORT).show();
 
                 } else {
 
                     btfAdapter.disable();
-                    Toast.makeText(getApplicationContext(),"Bluetooth Desligado",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Bluetooth Desligado", Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -138,12 +172,58 @@ public class UsuarioActivity extends AppCompatActivity {
                     }
                 });
 
-               builder.create();
-               builder.show();
+                builder.create();
+                builder.show();
 
             }
         });
 
 
     }
-}
+
+    protected void onDestroy() {
+        super.onDestroy();
+        beaconManager.unbind(this);
+    }
+
+    //callback do beacon
+
+    @Override
+    public void onBeaconServiceConnect() {
+
+        beaconManager.setRangeNotifier(new RangeNotifier() {
+            @Override
+            public void didRangeBeaconsInRegion(Collection<Beacon> beacon, Region region) {
+                if (beacon.size() > 0) {
+                    Log.i("eai", "The first beacon I see is about "+beacon.iterator().next().getDistance()+" meters away.");
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UsuarioActivity.this);
+
+                    builder.setTitle("Seja bem vindo ao iEventBe"); //titulo
+                    builder.setIcon(R.drawable.information); //icone
+                    builder.setMessage("Id Beacon: " + region.getId1()); // mensagem
+
+                    AlertDialog alertDialog = builder.create(); //cria o modal
+                    alertDialog.show(); //mostra o modal
+
+
+                }
+            }
+        });
+
+        try {
+            beaconManager.startRangingBeaconsInRegion(new Region("myRangingUniqueId", Identifier.parse(BEACON_ID),
+                    Identifier.parse("893"), Identifier.parse("77")));
+        } catch (RemoteException e) {   }
+
+        beaconManager.getBeaconParsers().add(new BeaconParser()
+                .setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
+
+         }
+
+
+
+
+    }
+
+
