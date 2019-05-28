@@ -3,8 +3,8 @@
     package="com.example.ieventbe">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:allowBackup="true"
@@ -13,10 +13,14 @@
         android:roundIcon="@mipmap/ic_launcher_ieventbe_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Usuario.UsuarioActivity"
-              android:screenOrientation="portrait" />
-        <activity android:name=".Empresa.EmpresaActivity"
-                  android:screenOrientation="portrait" />
+        <activity android:name=".Sobre.SobreEmpresaActivity"></activity>
+        <activity android:name=".Sobre.SobreUsuarioActivity" />
+        <activity
+            android:name=".Usuario.UsuarioActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Empresa.EmpresaActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait" />

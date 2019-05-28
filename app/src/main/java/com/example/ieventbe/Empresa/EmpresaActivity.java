@@ -1,6 +1,7 @@
 package com.example.ieventbe.Empresa;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.example.ieventbe.R;
+import com.example.ieventbe.Sobre.SobreEmpresaActivity;
+import com.example.ieventbe.Sobre.SobreUsuarioActivity;
 import com.example.ieventbe.Usuario.UsuarioActivity;
 
 public class EmpresaActivity extends AppCompatActivity {
@@ -24,6 +27,7 @@ public class EmpresaActivity extends AppCompatActivity {
         ImageView criasubevento = (ImageView)findViewById(R.id.criasubevento);
         ImageView listasubevento = (ImageView)findViewById(R.id.listasubevento);
         ImageView comousa = (ImageView)findViewById(R.id.funciona);
+        ImageView sobre = (ImageView)findViewById(R.id.sobre);
         ImageView regulamentos = (ImageView)findViewById(R.id.normasuso);
         ImageView sair = (ImageView)findViewById(R.id.sair);
 
@@ -47,6 +51,18 @@ public class EmpresaActivity extends AppCompatActivity {
 
                 AlertDialog alertDialog = builder.create(); //cria o modal
                 alertDialog.show(); //mostra o modal
+
+            }
+        });
+
+        //Quando o usuário clicar no botao sobre o aplicativo
+
+        sobre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(EmpresaActivity.this, SobreEmpresaActivity.class);
+                startActivity(i);
 
             }
         });

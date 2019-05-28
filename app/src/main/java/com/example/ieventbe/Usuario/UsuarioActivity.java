@@ -2,6 +2,7 @@ package com.example.ieventbe.Usuario;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,8 +12,8 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.example.ieventbe.MainActivity;
 import com.example.ieventbe.R;
+import com.example.ieventbe.Sobre.SobreUsuarioActivity;
 
 public class UsuarioActivity extends AppCompatActivity {
 
@@ -30,7 +31,7 @@ public class UsuarioActivity extends AppCompatActivity {
 
         ImageView eventos = (ImageView)findViewById(R.id.eventos);
         ImageView comousa = (ImageView)findViewById(R.id.funciona);
-        ImageView informacao = (ImageView)findViewById(R.id.info);
+        ImageView sobre = (ImageView)findViewById(R.id.sobre);
         ImageView normasuso = (ImageView)findViewById(R.id.normasuso);
         ImageView sair = (ImageView)findViewById(R.id.sair);
         Switch ligablu = (Switch)findViewById(R.id.ligaBlu);
@@ -90,11 +91,14 @@ public class UsuarioActivity extends AppCompatActivity {
         });
 
 
-        //informacao click
+        //Quando o usuário clicar no botao sobre o aplicativo
 
-        informacao.setOnClickListener(new View.OnClickListener() {
+        sobre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Intent i = new Intent(UsuarioActivity.this, SobreUsuarioActivity.class);
+                startActivity(i);
 
             }
         });
@@ -136,7 +140,6 @@ public class UsuarioActivity extends AppCompatActivity {
 
                builder.create();
                builder.show();
-
 
             }
         });
