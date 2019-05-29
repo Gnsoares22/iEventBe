@@ -40,7 +40,7 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
     private static final String BEACON_ID = "003e8c80-ea01-4ebb-b888-78da19df9e55";
     protected BluetoothAdapter btfAdapter;
     private BeaconManager beaconManager = null;
-    private Region beaconRegion = null;
+
 
     //formatar casas decimais para distancia do beacon
 
@@ -190,11 +190,10 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
 
     protected void onDestroy() {
         super.onDestroy();
-        Toast.makeText(getApplicationContext(), "Beacon desativado !!!", Toast.LENGTH_LONG).show();
         beaconManager.unbind(this);
     }
 
-    //callback do beacon
+    //callback do beacon na tela
 
     @Override
     public void onBeaconServiceConnect() {
@@ -202,15 +201,35 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
         beaconManager.setRangeNotifier(new RangeNotifier() {
             @Override
             public void didRangeBeaconsInRegion(Collection<Beacon> beacon, Region region) {
+                //comando depreciado pelo android studio porem ainda pode ser usado
+
                 if (beacon.size() > 0) {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(UsuarioActivity.this);
 
                     builder.setTitle("Notificação de evento"); //titulo
                     builder.setIcon(R.drawable.information); //icone
-                    builder.setMessage("Id Beacon: " + region.getId1() +
-                            "\n\n Distancia do evento:  " + format.format( beacon.iterator().next().getDistance())
-                    + " metros"); // mensagem
+                    builder.setMessage("Deseja participar da palestra xxxxxx? " +
+                            "\n\n Você está numa distancia de:  " + format.format( beacon.iterator().next().getDistance()*10)
+                    + " metros do evento."); // mensagem
+
+                    //se o usuário confirmar sua participação no sub evento
+                    builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                            //acontece nada ainda
+
+                        }
+                    });
+
+                    //se o usuário não confirmar sua participação no sub evento
+                    builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+
+                            //acontece nada
+
+                        }
+                    });
 
                     AlertDialog alertDialog = builder.create(); //cria o modal
                     alertDialog.show(); //mostra o modal
@@ -229,8 +248,6 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
                 .setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
 
          }
-
-
 
 
     }
