@@ -29,6 +29,7 @@ import org.altbeacon.beacon.MonitorNotifier;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -40,6 +41,10 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
     protected BluetoothAdapter btfAdapter;
     private BeaconManager beaconManager = null;
     private Region beaconRegion = null;
+
+    //formatar casas decimais para distancia do beacon
+
+    DecimalFormat format = new DecimalFormat("0.00");
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -69,6 +74,8 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
         beaconManager = BeaconManager.getInstanceForApplication(this); //pegando a instancia da aplicação
         //definindo a coordenada do iBeacon
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(IBEACON_LAYOUT));
+        //periodo de scanner do beacon
+        beaconManager.setForegroundScanPeriod(50000); //7000 == 7 segundos ... 100000 == 1 minuto
         beaconManager.bind(this);
 
 
@@ -183,6 +190,7 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
 
     protected void onDestroy() {
         super.onDestroy();
+        Toast.makeText(getApplicationContext(), "Beacon desativado !!!", Toast.LENGTH_LONG).show();
         beaconManager.unbind(this);
     }
 
@@ -195,13 +203,14 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
             @Override
             public void didRangeBeaconsInRegion(Collection<Beacon> beacon, Region region) {
                 if (beacon.size() > 0) {
-                    Log.i("eai", "The first beacon I see is about "+beacon.iterator().next().getDistance()+" meters away.");
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(UsuarioActivity.this);
 
-                    builder.setTitle("Seja bem vindo ao iEventBe"); //titulo
+                    builder.setTitle("Notificação de evento"); //titulo
                     builder.setIcon(R.drawable.information); //icone
-                    builder.setMessage("Id Beacon: " + region.getId1()); // mensagem
+                    builder.setMessage("Id Beacon: " + region.getId1() +
+                            "\n\n Distancia do evento:  " + format.format( beacon.iterator().next().getDistance())
+                    + " metros"); // mensagem
 
                     AlertDialog alertDialog = builder.create(); //cria o modal
                     alertDialog.show(); //mostra o modal
