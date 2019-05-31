@@ -40,6 +40,7 @@ public class ConfirmacaoActivity extends AppCompatActivity {
 
         } else {
 
+            //pega o número do telefone do usuário
             String numero = telephonyManager.getLine1Number();
             telefone.setText(numero);
 

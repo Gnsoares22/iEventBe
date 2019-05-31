@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ieventbe.Beacon.ConfirmacaoActivity;
+import com.example.ieventbe.LoginActivity;
 import com.example.ieventbe.R;
 import com.example.ieventbe.Sobre.SobreUsuarioActivity;
 import org.altbeacon.beacon.Beacon;
@@ -174,6 +175,8 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
                 //define um botão como positivo
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
+                        Intent i = new Intent(UsuarioActivity.this, LoginActivity.class);
+                        startActivity(i);
                         finish();
                     }
                 });
@@ -215,7 +218,7 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
                     builder.setTitle("Notificação de evento"); //titulo
                     builder.setIcon(R.drawable.information); //icone
                     builder.setMessage("Deseja participar da palestra xxxxxx? " +
-                            "\n\n Você está numa distancia de:  " + format.format( beacon.iterator().next().getDistance()*10)
+                            "\n\n Você está numa distancia de:  " + format.format( beacon.iterator().next().getDistance())
                     + " metros do sub evento."); // mensagem
 
                     //se o usuário confirmar sua participação no sub evento

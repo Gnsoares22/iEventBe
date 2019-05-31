@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.ieventbe.LoginActivity;
 import com.example.ieventbe.R;
 import com.example.ieventbe.Sobre.SobreEmpresaActivity;
 import com.example.ieventbe.Sobre.SobreUsuarioActivity;
@@ -82,6 +83,8 @@ public class EmpresaActivity extends AppCompatActivity {
                 //define um botão como positivo
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface arg0, int arg1) {
+                        Intent i = new Intent(EmpresaActivity.this, LoginActivity.class);
+                        startActivity(i);
                         finish();
                     }
                 });
