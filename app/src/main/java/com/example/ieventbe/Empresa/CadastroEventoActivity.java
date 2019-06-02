@@ -47,8 +47,8 @@ public class CadastroEventoActivity extends AppCompatActivity {
         EditText organizadorevento = (EditText)findViewById(R.id.txtEventoOrganizador);
         Spinner listaestado = (Spinner)findViewById(R.id.spinnerestado);
         Spinner listacidade = (Spinner)findViewById(R.id.spinnercidade);
-        ImageButton btnUpload = (ImageButton)findViewById(R.id.btnUpload);
-        ImageButton btnCamera = (ImageButton)findViewById(R.id.btnUploadCamera);
+        ImageView btnUpload = (ImageView)findViewById(R.id.btnUpload);
+        ImageView btnCamera = (ImageView)findViewById(R.id.btnUploadCamera);
         fotoevento = findViewById(R.id.fotoevento);
         Button cadastraeventp = (Button)findViewById(R.id.btnCadastraEvento);
 
