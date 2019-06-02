@@ -20,7 +20,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/texto2"
         app:layout_constraintEnd_toEndOf="@+id/texto2"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="@+id/texto2"
         app:layout_constraintTop_toBottomOf="@+id/texto" />
 
@@ -53,13 +53,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo_ieventbe" />
 
-    <TextView
+    <ImageView
         android:id="@+id/texto2"
-        android:layout_width="226dp"
-        android:layout_height="60dp"
+        android:layout_width="249dp"
+        android:layout_height="90dp"
         android:layout_marginTop="12dp"
         android:gravity="center"
-        android:text="EasyPress"
+        android:src="@drawable/easypress"
         android:textColor="#FFFFFF"
         android:textSize="40sp"
         android:textStyle="bold"
