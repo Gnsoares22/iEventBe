@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">iEventBe</string>
+
+    <string-array name="Estado">
+        <item> São Paulo</item>
+    </string-array>
+
+    <string-array name="Cidades">
+
+        <item>Guaratinguetá</item>
+        <item>Aparecida</item>
+        <item>Pindamonhangaba</item>
+        <item>São José dos Campos</item>
+        <item>Taubaté</item>
+        <item>Lorena</item>
+        <item>Jacareí</item>
+
+
+    </string-array>
+
 </resources>
+

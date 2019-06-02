@@ -1,133 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/txtEsqueceu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="Esqueceu a senha?"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/checke"
-        app:layout_constraintHorizontal_bias="0.426"
-        app:layout_constraintStart_toStartOf="@+id/checku"
-        app:layout_constraintTop_toBottomOf="@+id/btnSalvar" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="371dp"
-        android:layout_height="119dp"
-        android:layout_marginTop="28dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ieventbe3" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="85dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="32dp"
-        android:text="Email:"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
-
-    <EditText
-        android:id="@+id/txtEmail"
-        android:layout_width="334dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="Entre com seu email"
-        android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.002" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Senha:"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/txtEmail"
-        app:layout_constraintTop_toBottomOf="@+id/txtEmail" />
-
-    <EditText
-        android:id="@+id/txtSenha"
-        android:layout_width="330dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="12dp"
-        android:ems="10"
-        android:hint="Entre com sua senha"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.543"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-    <Button
-        android:id="@+id/btnSalvar"
-        android:layout_width="337dp"
-        android:layout_height="54dp"
-        android:layout_marginTop="28dp"
-        android:background="#F58323"
-        android:text="Logar"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/txtSenha"
-        app:layout_constraintTop_toBottomOf="@+id/txtSenha" />
-
-    <CheckBox
-        android:id="@+id/checku"
-        android:layout_width="141dp"
-        android:layout_height="29dp"
-        android:layout_marginTop="28dp"
-        android:text="Usuário"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/btnSalvar"
-        app:layout_constraintTop_toBottomOf="@+id/btnSalvar" />
-
-    <CheckBox
-        android:id="@+id/checke"
-        android:layout_width="162dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginLeft="52dp"
-        android:layout_marginTop="28dp"
-        android:text="Empresa"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/btnSalvar"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/checku"
-        app:layout_constraintTop_toBottomOf="@+id/btnSalvar" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="12dp"
-        android:text="Registre-se como usuário"
-        app:layout_constraintEnd_toEndOf="@+id/txtEsqueceu"
-        app:layout_constraintHorizontal_bias="0.512"
-        app:layout_constraintStart_toStartOf="@+id/txtEsqueceu"
-        app:layout_constraintTop_toBottomOf="@+id/txtEsqueceu" />
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        tools:context=".LoginActivity">
 
 
-</android.support.constraint.ConstraintLayout>
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="371dp"
+            android:layout_height="119dp"
+            android:layout_marginTop="28dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ieventbe3" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textView2"
+            android:layout_width="330dp"
+            android:layout_height="58dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="32dp"
+            android:text="Email:"
+            android:textSize="18sp"
+            app:errorEnabled="true"
+            app:layout_constraintStart_toStartOf="@+id/imageView2"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/txtEmail"
+                android:layout_width="334dp"
+                android:layout_height="47dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="Entre com seu email"
+                android:inputType="textEmailAddress"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.571"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                app:layout_constraintVertical_bias="0.002" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:errorEnabled="true"
+            android:text="Senha:"
+            app:passwordToggleEnabled="true"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/textView2"
+            app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/txtSenha"
+                android:layout_width="330dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="12dp"
+                android:ems="10"
+                android:hint="Entre com sua senha"
+                android:inputType="textPassword"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.543"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        </android.support.design.widget.TextInputLayout>
+
+
+        <Button
+            android:id="@+id/btnSalvar"
+            android:layout_width="337dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="28dp"
+            android:background="#F58323"
+            android:text="Logar"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/textView3"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <CheckBox
+            android:id="@+id/checku"
+            android:layout_width="141dp"
+            android:layout_height="29dp"
+            android:layout_marginTop="28dp"
+            android:text="Usuário"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@+id/btnSalvar"
+            app:layout_constraintTop_toBottomOf="@+id/btnSalvar" />
+
+        <CheckBox
+            android:id="@+id/checke"
+            android:layout_width="162dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="52dp"
+            android:layout_marginLeft="52dp"
+            android:layout_marginTop="28dp"
+            android:text="Empresa"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/btnSalvar"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/checku"
+            app:layout_constraintTop_toBottomOf="@+id/btnSalvar" />
+
+        <Button
+            android:id="@+id/txtEsqueceu"
+            android:layout_width="190dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="#F58425"
+            android:drawableLeft="@drawable/ic_esqueceu"
+            android:text="Esqueceu a senha?"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/checke"
+            app:layout_constraintHorizontal_bias="0.426"
+            app:layout_constraintStart_toStartOf="@+id/checku"
+            app:layout_constraintTop_toBottomOf="@+id/btnSalvar" />
+
+        <Button
+            android:id="@+id/txtRegistra"
+            android:drawableLeft="@drawable/ic_done"
+            android:layout_width="227dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="8dp"
+            android:background="#F58425"
+            android:text="Registre-se como usuário"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/txtEsqueceu"
+            app:layout_constraintHorizontal_bias="0.512"
+            app:layout_constraintStart_toStartOf="@+id/txtEsqueceu"
+            app:layout_constraintTop_toBottomOf="@+id/txtEsqueceu" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+
+
+</ScrollView>

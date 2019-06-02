@@ -1,7 +1,10 @@
 package com.example.ieventbe.Empresa;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,10 +19,17 @@ import com.example.ieventbe.Usuario.UsuarioActivity;
 
 public class EmpresaActivity extends AppCompatActivity {
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_empresa);
+
+
+        //pede permissão para acessar a camera do seu dispositivo
+
+        requestPermissions(new String[]{Manifest.permission.CAMERA}, 1234);
+
 
         getSupportActionBar().hide();
 
@@ -31,6 +41,19 @@ public class EmpresaActivity extends AppCompatActivity {
         ImageView sobre = (ImageView)findViewById(R.id.sobre);
         ImageView regulamentos = (ImageView)findViewById(R.id.normasuso);
         ImageView sair = (ImageView)findViewById(R.id.sair);
+
+
+        //Quando o usuário clicar no botao criar evento
+
+        criaevento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(EmpresaActivity.this, CadastroEventoActivity.class);
+                startActivity(i);
+
+            }
+        });
 
 
 

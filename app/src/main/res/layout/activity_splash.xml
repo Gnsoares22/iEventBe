@@ -14,7 +14,7 @@
         android:layout_height="45dp"
         android:layout_marginTop="-25dp"
         android:gravity="center"
-        android:text="Developed by:"
+        android:text="Developed by"
         android:textColor="#FFFFFF"
         android:textSize="30sp"
         android:textStyle="bold"

@@ -64,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     Toast.makeText(getApplicationContext(),"Preencha o campo email", Toast.LENGTH_SHORT).show();
 
+
                 } else if(senha.equals("")){
 
                     Toast.makeText(getApplicationContext(),"Preencha o campo senha", Toast.LENGTH_SHORT).show();
