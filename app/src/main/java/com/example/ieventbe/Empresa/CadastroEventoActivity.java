@@ -1,31 +1,66 @@
 package com.example.ieventbe.Empresa;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.example.ieventbe.Classes.Evento;
+import com.example.ieventbe.MainActivity;
 import com.example.ieventbe.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import java.io.ByteArrayOutputStream;
 
 public class CadastroEventoActivity extends AppCompatActivity {
 
     private ImageView fotoevento;
+    private ProgressBar progresso;
+    private EditText tituloevento;
+    private EditText descricaoevento;
+    private EditText periodoevento;
+    private EditText organizadorevento;
+    private Spinner listaestado;
+    private Spinner listacidade;
+    Bitmap imagem;
 
     private Uri mImageUri;
+
+
+    //variáveis do firebase e do storage data
+
+    private StorageReference mStorageRef;
+    private DatabaseReference mDatabaseRef;
+
+    private StorageTask EventosUploadTask;
 
     //Atividade para cadastro de eventos com upload de foto
 
@@ -41,28 +76,32 @@ public class CadastroEventoActivity extends AppCompatActivity {
 
         //variáveis da minha view
 
-        EditText tituloevento = (EditText)findViewById(R.id.txtTituloEvento);
-        EditText descricaoevento = (EditText)findViewById(R.id.txtDescricaoEvento);
-        EditText periodoevento = (EditText)findViewById(R.id.txtPeriodoEvento);
-        EditText organizadorevento = (EditText)findViewById(R.id.txtEventoOrganizador);
-        Spinner listaestado = (Spinner)findViewById(R.id.spinnerestado);
-        Spinner listacidade = (Spinner)findViewById(R.id.spinnercidade);
-        ImageView btnUpload = (ImageView)findViewById(R.id.btnUpload);
-        ImageView btnCamera = (ImageView)findViewById(R.id.btnUploadCamera);
+        tituloevento = findViewById(R.id.txtTituloEvento);
+        descricaoevento = findViewById(R.id.txtDescricaoEvento);
+        periodoevento = findViewById(R.id.txtPeriodoEvento);
+        organizadorevento = findViewById(R.id.txtEventoOrganizador);
+        listaestado = (Spinner) findViewById(R.id.spinnerestado);
+        listacidade = (Spinner) findViewById(R.id.spinnercidade);
+        ImageView btnUpload = (ImageView) findViewById(R.id.btnUpload);
+        ImageView btnCamera = (ImageView) findViewById(R.id.btnUploadCamera);
         fotoevento = findViewById(R.id.fotoevento);
-        Button cadastraeventp = (Button)findViewById(R.id.btnCadastraEvento);
+        progresso = findViewById(R.id.Progresso);
+        Button btnCadastra = (Button) findViewById(R.id.btnCadastraEvento);
+
+        mStorageRef = FirebaseStorage.getInstance().getReference("fotoeventos");
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("eventos");
 
 
         //criando lista para estados para exbir no spinner estados
 
-        ArrayAdapter<CharSequence> estados = ArrayAdapter.createFromResource(this,R.array.Estado,android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> estados = ArrayAdapter.createFromResource(this, R.array.Estado, android.R.layout.simple_spinner_item);
         estados.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         listaestado.setAdapter(estados);
 
 
         //criando lista para cidades para exibir no spinner cidades
 
-        ArrayAdapter<CharSequence> cidades = ArrayAdapter.createFromResource(this,R.array.Cidades,android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> cidades = ArrayAdapter.createFromResource(this, R.array.Cidades, android.R.layout.simple_spinner_item);
         cidades.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         listacidade.setAdapter(cidades);
 
@@ -72,7 +111,7 @@ public class CadastroEventoActivity extends AppCompatActivity {
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+
                 abrirfotosandroid();
             }
 
@@ -90,6 +129,30 @@ public class CadastroEventoActivity extends AppCompatActivity {
             }
         });
 
+
+        btnCadastra.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //verifica se a foto é nula ou se elá está em carregamento ainda
+
+                if (EventosUploadTask != null && EventosUploadTask.isInProgress()) {
+
+                    Toast.makeText(CadastroEventoActivity.this, "Foto do evento está" +
+                            " carregando aguarde !!!", Toast.LENGTH_LONG).show();
+
+
+                } else {
+
+                    //Metodo para salvar os dados no BD firebase
+
+                    SalvadadosBd();
+
+                }
+            }
+        });
+
+
     }
 
 
@@ -102,7 +165,8 @@ public class CadastroEventoActivity extends AppCompatActivity {
                 startActivity(new Intent(this, EmpresaActivity.class));  //O efeito ao ser pressionado do botão (no caso abre a activity)
                 finishAffinity();
                 break;
-            default:break;
+            default:
+                break;
         }
         return true;
 
@@ -116,7 +180,7 @@ public class CadastroEventoActivity extends AppCompatActivity {
         Intent i = new Intent();
         i.setType("image/*");
         i.setAction(i.ACTION_GET_CONTENT);
-        startActivityForResult(i,1);
+        startActivityForResult(i, 1);
     }
 
 
@@ -125,7 +189,7 @@ public class CadastroEventoActivity extends AppCompatActivity {
     private void tirarfoto() {
 
         Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(i,2);
+        startActivityForResult(i, 2);
 
 
     }
@@ -138,8 +202,8 @@ public class CadastroEventoActivity extends AppCompatActivity {
 
         //se o codigo de requisição for 1 eu pego diretamente da minha galeria de fotos
 
-        if(requestCode == 1 && resultCode == RESULT_OK
-        && data != null && data.getData() != null){
+        if (requestCode == 1 && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
 
             mImageUri = data.getData();
             Picasso.with(this).load(mImageUri).into(fotoevento);
@@ -148,16 +212,112 @@ public class CadastroEventoActivity extends AppCompatActivity {
 
             //se o codigo de requisição for 2 eu consigo tirar foto pelo celular
 
-        } else if(requestCode == 2 && resultCode == RESULT_OK){
+        } else if (requestCode == 2 && resultCode == RESULT_OK) {
 
-            Bundle extras = data.getExtras();
-            Bitmap imagem =  (Bitmap) extras.get("data");
+
+            imagem = (Bitmap) data.getExtras().get("data");
             fotoevento.setImageBitmap(imagem);
             fotoevento.setVisibility(View.VISIBLE);
+
 
         }
 
     }
 
+    //pega extensao da foto
+
+    private String getFileExtension(Uri uri) {
+
+        ContentResolver cr = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+
+        return mime.getExtensionFromMimeType(cr.getType(uri));
+
+    }
+
+
+    //METODO QUE SALVA OS DADOS NO FIREBASE REALTIME E NO FIREBASESTORE
+
+    private void SalvadadosBd() {
+
+        //SE A FOTO FOR PEGA DIRETO DO APARELHO
+
+        if (mImageUri != null) {
+
+            StorageReference filereference = mStorageRef.child(System.currentTimeMillis()
+                    + "." + getFileExtension(mImageUri));
+
+            EventosUploadTask = filereference.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+
+                //se a foto for sucesso manda para o banco
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    //para de executar o progressbar apos 5 segundos e o progressbar zera !!!
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            progresso.setProgress(0);
+                        }
+                    }, 500);
+
+
+                    //metodo que pega tudoo !!!
+
+                    Evento eventos = new Evento(tituloevento.getText().toString().trim(), descricaoevento
+                            .getText().toString().trim(), periodoevento.getText().toString().trim(), organizadorevento
+                            .getText().toString().trim(), taskSnapshot.getStorage().getDownloadUrl().toString(), listaestado.getSelectedItem().toString().trim(),
+                            listacidade.getSelectedItem().toString().trim());
+
+                    String eventoId = mDatabaseRef.push().getKey();
+                    mDatabaseRef.child(eventoId).setValue(eventos);
+
+
+                    //sucesso ao gravar os dados
+
+                    Toast.makeText(CadastroEventoActivity.this, "Evento cadastrado" +
+                            " com sucesso !!!", Toast.LENGTH_LONG).show();
+
+
+                }
+            })
+
+                    //se não mostra a exceção de erro
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
+                            Toast.makeText(CadastroEventoActivity.this,
+                                    e.getMessage(), Toast.LENGTH_LONG);
+
+                        }
+                    })
+
+
+                    //adiciona o tempo na barra de progresso
+
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            //seta o tempo da barra de progresso até a foto ir para o firebase storage
+
+                            double progress = (100 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                            progresso.setProgress((int) progress);
+
+                        }
+                    });
+
+            //SE A IMAGEM FOR PEGA DIRETAMENTE DA CAMERA
+
+        }  else
+
+            Toast.makeText(CadastroEventoActivity.this, "Nenhuma imagem" +
+                    " selecionada !!!", Toast.LENGTH_LONG).show();
+
+    }
 
 }
+
+
