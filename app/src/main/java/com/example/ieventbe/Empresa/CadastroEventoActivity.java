@@ -29,6 +29,7 @@ import com.example.ieventbe.MainActivity;
 import com.example.ieventbe.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -244,10 +245,12 @@ public class CadastroEventoActivity extends AppCompatActivity {
 
         if (mImageUri != null) {
 
-            StorageReference filereference = mStorageRef.child(System.currentTimeMillis()
+            final StorageReference filereference = mStorageRef.child(System.currentTimeMillis()
                     + "." + getFileExtension(mImageUri));
 
-            EventosUploadTask = filereference.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            EventosUploadTask = filereference.putFile(mImageUri)
+
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
 
                 //se a foto for sucesso manda para o banco
@@ -263,11 +266,18 @@ public class CadastroEventoActivity extends AppCompatActivity {
                     }, 500);
 
 
+                    //método novo para armazenar imagens
+
+                    Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                    while (!urlTask.isSuccessful());
+                    Uri downloadUrl = urlTask.getResult();
+
+
                     //metodo que pega tudoo !!!
 
                     Evento eventos = new Evento(tituloevento.getText().toString().trim(), descricaoevento
                             .getText().toString().trim(), periodoevento.getText().toString().trim(), organizadorevento
-                            .getText().toString().trim(), taskSnapshot.getStorage().getDownloadUrl().toString(), listaestado.getSelectedItem().toString().trim(),
+                            .getText().toString().trim(), downloadUrl.toString(), listaestado.getSelectedItem().toString().trim(),
                             listacidade.getSelectedItem().toString().trim());
 
                     String eventoId = mDatabaseRef.push().getKey();

@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -18,14 +18,19 @@
         android:roundIcon="@mipmap/ic_launcher_ieventbe_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Empresa.CadastroEventoActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity android:name=".Beacon.ConfirmacaoActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Sobre.SobreEmpresaActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Sobre.SobreUsuarioActivity"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".Empresa.ListaEventosActivity"></activity>
+        <activity
+            android:name=".Empresa.CadastroEventoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Beacon.ConfirmacaoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Sobre.SobreEmpresaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Sobre.SobreUsuarioActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Usuario.UsuarioActivity"
             android:screenOrientation="portrait" />
