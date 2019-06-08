@@ -2,23 +2,19 @@ package com.example.ieventbe.Usuario;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.RemoteException;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ieventbe.Beacon.ConfirmacaoActivity;
@@ -32,8 +28,14 @@ import org.altbeacon.beacon.BeaconParser;
 import org.altbeacon.beacon.Identifier;
 import org.altbeacon.beacon.RangeNotifier;
 import org.altbeacon.beacon.Region;
+
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
 
 public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer {
 
@@ -44,11 +46,42 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
     protected BluetoothAdapter btfAdapter;
     private BeaconManager beaconManager = null;
 
+    //guarda o id da lista de presença do usuário logado, após ele confirmar a presença
+    // na ConfirmacaoActivity
+    private String idPresenca = null;
 
     //formatar casas decimais para distancia do beacon
-
     DecimalFormat format = new DecimalFormat("0.00");
 
+    DateFormat formatDate = new SimpleDateFormat("HH:mm:ss");
+
+    private boolean isConfirmandoPresenca = false;
+    private Integer idEvento = 1000;
+    private HashMap<String, Integer> eventosCadastrados = new HashMap<String, Integer>();
+    private Date ultimaNotificacao = null;
+    private ArrayList<Integer> eventosConfirmados = new ArrayList<Integer>();
+
+    private Integer getEventoByBeacon(String idBeacon){
+        return eventosCadastrados.get(idBeacon);
+    }
+
+    private void salvarUltimaNotificacao(){
+        ultimaNotificacao = new Date();
+
+        //TODO: fazer um update no Firebase WHERE id do objeto ListaPresenca = idPresenca
+
+        Toast.makeText(UsuarioActivity.this, "Presença atualizada: "+formatDate.format(ultimaNotificacao),
+                Toast.LENGTH_LONG).show();
+    }
+
+    private boolean isEventoConfirmado(Beacon beacon, Integer idEvento){
+        for(Integer id: eventosConfirmados){
+            if (id == idEvento){
+                return true;
+            }
+        }
+        return false;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -57,6 +90,10 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
         setContentView(R.layout.activity_usuario);
 
         getSupportActionBar().hide();
+
+        //lista de eventosCadastrados disponíveis
+        //associa o beacon com o evento
+        eventosCadastrados.put(BEACON_ID,idEvento);
 
         //declara as variaveis
 
@@ -105,7 +142,7 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
         });
 
 
-        //quando clicar no botao eventos
+        //quando clicar no botao eventosCadastrados
 
         eventos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,6 +238,11 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
         beaconManager.unbind(this);
     }
 
+    private boolean canShow(){
+
+        return true;
+    }
+
     //callback do beacon na tela
 
     @Override
@@ -211,39 +253,47 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
             public void didRangeBeaconsInRegion(Collection<Beacon> beacon, Region region) {
                 //comando depreciado pelo android studio porem ainda pode ser usado
 
-                if (beacon.size() > 0) {
+                if (beacon.size() > 0 && !isConfirmandoPresenca) {
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(UsuarioActivity.this);
+                    final Beacon beaconAtual = beacon.iterator().next();
 
-                    builder.setTitle("Notificação de evento"); //titulo
-                    builder.setIcon(R.drawable.information); //icone
-                    builder.setMessage("Deseja participar da palestra xxxxxx? " +
-                            "\n\n Você está numa distancia de:  " + format.format( beacon.iterator().next().getDistance())
-                    + " metros do sub evento."); // mensagem
+                    if (isEventoConfirmado(beaconAtual, idEvento)){
+                        salvarUltimaNotificacao();
+                    }else { //se o evento nao foi confirmado pelo usuário, mostra alert para confirmar
+                        AlertDialog.Builder builder = new AlertDialog.Builder(UsuarioActivity.this);
 
-                    //se o usuário confirmar sua participação no sub evento
-                    builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface arg0, int arg1) {
+                        builder.setTitle("Notificação de evento"); //titulo
+                        builder.setIcon(R.drawable.information); //icone
+                        builder.setMessage("Deseja participar da palestra xxxxxx? " +
+                                "\n\n Você está numa distancia de:  " + format.format(beacon.iterator().next().getDistance())
+                                + " metros do sub evento."); // mensagem
 
-                            //manda para a tela de confirmação de dados para registrar presença no sub evento
-                            Intent i = new Intent(UsuarioActivity.this,ConfirmacaoActivity.class);
-                            startActivity(i);
+                        //se o usuário confirmar sua participação no sub evento
+                        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
 
-                        }
-                    });
+                                //manda para a tela de confirmação de dados para registrar presença no sub evento
+                                Intent i = new Intent(UsuarioActivity.this, ConfirmacaoActivity.class);
+                                i.putExtra("idBeacon", beaconAtual.getId1());
+                                i.putExtra("idEvento", idEvento);
+                                int requestCode = 111;
+                                startActivityForResult(i, requestCode);
 
-                    //se o usuário não confirmar sua participação no sub evento
-                    builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface arg0, int arg1) {
+                            }
+                        });
 
-                            //acontece nada
+                        //se o usuário não confirmar sua participação no sub evento
+                        builder.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
 
-                        }
-                    });
+                                //acontece nada
 
-                    AlertDialog alertDialog = builder.create(); //cria o modal
-                    alertDialog.show(); //mostra o modal
+                            }
+                        });
 
+                        AlertDialog alertDialog = builder.create(); //cria o modal
+                        alertDialog.show(); //mostra o modal
+                    }
 
                 }
             }
@@ -259,7 +309,22 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
 
          }
 
+        @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data)
+        {
+            super.onActivityResult(requestCode, resultCode, data);
 
-    }
+            //Verifica se voltou a resposta da ConfirmacaoActivity
+            if(requestCode==111)
+            {
+                //TODO: pegar o idBeacon que está voltando da ConfirmacaoActivity
+                String idBeacon = BEACON_ID;
+                idPresenca = data.getStringExtra("idPresenca");
+                eventosConfirmados.add(getEventoByBeacon(idBeacon));
+            }
+        }
+
+
+}
 
 

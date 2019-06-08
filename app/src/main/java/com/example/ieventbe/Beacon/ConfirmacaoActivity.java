@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -31,6 +32,10 @@ import java.util.UUID;
 
 public class ConfirmacaoActivity extends AppCompatActivity {
 
+    //variáveis globais para receber os parâmetros da UsuarioActivity
+    String idBeacon = "";
+    Integer idEvento = 0;
+
     FirebaseDatabase database;
 
     @TargetApi(Build.VERSION_CODES.O)
@@ -42,12 +47,10 @@ public class ConfirmacaoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_confirmacao);
 
         //Variáveis da lista de presença
-
-
         final EditText email = (EditText) findViewById(R.id.txtEmail);
         final EditText nome = (EditText) findViewById(R.id.txtNome);
 
-        Button btnConfirma = (Button)findViewById(R.id.btnConfirma);
+        Button btnConfirma = (Button) findViewById(R.id.btnConfirma);
 
         getSupportActionBar().setTitle("Confirmação de presença");
 
@@ -57,7 +60,11 @@ public class ConfirmacaoActivity extends AppCompatActivity {
         Date datahora = new Date();
 
         //pega o número do telefone do usuário É NATURAL APARECER ESSE ERRO, POIS SE EU JPA DEI PERMISSÃO
-        //ELE É IGNORADO
+        //ELE É IGNORADO (PERMISSÃO BURLADA !!)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
         final String numero = telephonyManager.getLine1Number();
 
 
@@ -98,21 +105,32 @@ public class ConfirmacaoActivity extends AppCompatActivity {
                 lista.setEmail(email.getText().toString());
                 lista.setNumerocelular(numero.toString());
                 lista.setDatachegada(dataFormatada.toString());
-                lista.setHorachega(hora_atual.toString());
+                lista.setHorachegada(hora_atual.toString());
                 lista.setHorasaida("------");
 
-                reference.child("ListaPresença").child(lista.getId()).setValue(lista);
+                reference.child("ListaPresenca").child(lista.getId()).setValue(lista);
 
-                Toast.makeText(ConfirmacaoActivity.this, "Sua presença foi salva na lista curta " +
-                                " o subevento :) !!!",
+                Toast.makeText(ConfirmacaoActivity.this, "Sua presença foi salva na lista de presença do subevento :) !!!",
                         Toast.LENGTH_LONG).show();
 
+                //pega parâmetros passados pela UsuarioActivity
+                Intent intent = getIntent();
+                idBeacon = intent.getStringExtra("idBeacon");
+                idEvento = intent.getIntExtra("idEvento",0);
+
+                //devolve para a UsuarioActivity os parâmetros do evento confirmado
+                Intent intentResult=new Intent();
+                intentResult.putExtra("idBeacon",idBeacon);
+                intentResult.putExtra("idEvento",idEvento);
+                intentResult.putExtra("idPresenca", lista.getId());
+                setResult(111,intentResult);
 
                 //zera os campos !!!
 
                 nome.setText("");
                 email.setText("");
 
+                finish();
             }
         });
 
