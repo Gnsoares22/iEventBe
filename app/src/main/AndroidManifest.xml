@@ -18,7 +18,10 @@
         android:roundIcon="@mipmap/ic_launcher_ieventbe_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Empresa.ListaEventosActivity"></activity>
+        <activity android:name=".Empresa.CadastroSubEventoActivity"></activity>
+        <activity
+            android:name=".Empresa.ListaEventosActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Empresa.CadastroEventoActivity"
             android:screenOrientation="portrait" />

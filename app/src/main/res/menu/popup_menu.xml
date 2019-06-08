@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/edita"
+        android:title="Editar evento">
+
+    </item>
+
+    <item
+        android:id="@+id/excluir"
+        android:title="Excluir evento">
+
+    </item>
+
+    <item
+        android:id="@+id/subevento"
+        android:title="Ver sub eventos">
+
+    </item>
+
+</menu>

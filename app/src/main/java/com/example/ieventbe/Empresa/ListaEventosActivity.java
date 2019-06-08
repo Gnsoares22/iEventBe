@@ -12,26 +12,31 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.ieventbe.BancoBD.ImageAdapter;
 import com.example.ieventbe.Classes.Evento;
 import com.example.ieventbe.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListaEventosActivity extends AppCompatActivity {
+public class ListaEventosActivity extends AppCompatActivity implements ImageAdapter.OnItemClickListener {
 
     private RecyclerView recyclerView;
     private ImageAdapter adapter;
-
+    private ValueEventListener mDBListener;
+    private FirebaseStorage fotos;
     private DatabaseReference DatabaseRef;
     private List<Evento> eventos;
 
@@ -54,22 +59,33 @@ public class ListaEventosActivity extends AppCompatActivity {
 
         eventos = new ArrayList<>();
 
+        adapter = new ImageAdapter(ListaEventosActivity.this,eventos);
+
+        fotos = FirebaseStorage.getInstance();
+
         DatabaseRef = FirebaseDatabase.getInstance().getReference("eventos");
 
-        DatabaseRef.addValueEventListener(new ValueEventListener() {
+      mDBListener =  DatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                eventos.clear();
 
                 for(DataSnapshot postSnapshot: dataSnapshot.getChildren()){
 
                     Evento evento = postSnapshot.getValue(Evento.class);
+                    evento.setId(postSnapshot.getKey());
                     eventos.add(evento);
 
                 }
 
+                adapter.notifyDataSetChanged();
+
                 adapter = new ImageAdapter(ListaEventosActivity.this,eventos);
 
                 recyclerView.setAdapter(adapter);
+
+                adapter.setOnItemClickListener(ListaEventosActivity.this);
 
 
             }
@@ -125,5 +141,56 @@ public class ListaEventosActivity extends AppCompatActivity {
         });
 
         return true;
+    }
+
+
+    @Override
+    public void onItemClick(int position) {
+        //somente pega a posição
+    }
+
+    @Override
+    public void onEditClick(int position) {
+
+        Toast.makeText(getApplicationContext(),"",Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
+    public void onDeleteClick(int position) {
+
+        Evento eventoselecionado = eventos.get(position);
+        final String idselecionado = eventoselecionado.getId();
+        StorageReference imageref = fotos.getReferenceFromUrl(eventoselecionado.getImagemEventoUrl());
+
+
+        imageref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+
+                DatabaseRef.child(idselecionado).removeValue();
+
+                Toast.makeText(getApplicationContext(),"Evento Deletado !!!!",Toast.LENGTH_LONG).show();
+
+
+            }
+        });
+
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DatabaseRef.removeEventListener(mDBListener);
+
+    }
+
+    @Override
+    public void onSubClick(int position) {
+
+        Toast.makeText(getApplicationContext(),"",Toast.LENGTH_LONG).show();
+
+
     }
 }

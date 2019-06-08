@@ -5,7 +5,7 @@
     <item android:id="@+id/menu_filtra"
         android:icon="@drawable/ic_procura"
         android:title="Procurar"
-        app:showAsAction="ifRoom|collapseActionView"
+        app:showAsAction="always"
         app:actionViewClass="android.widget.SearchView"/>
 
 </menu>

@@ -1,5 +1,7 @@
 package com.example.ieventbe.Classes;
 
+import com.google.firebase.database.Exclude;
+
 public class Evento {
 
       private String TituloEvento;
@@ -9,6 +11,7 @@ public class Evento {
       private String ImagemEventoUrl;
       private String EstadoEvento;
       private String CidadeEvento;
+      private String Id;
 
       public Evento(){
 
@@ -105,5 +108,15 @@ public class Evento {
 
     public void setCidadeEvento(String cidEvento) {
         CidadeEvento = cidEvento;
+    }
+
+    @Exclude
+    public String getId() {
+        return Id;
+    }
+
+    @Exclude
+    public void setId(String id) {
+        Id = id;
     }
 }

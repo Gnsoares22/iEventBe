@@ -56,7 +56,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnConfirma"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
@@ -65,13 +65,12 @@
         android:textColor="#FFFFFF"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/txtTelefone"
+    <ImageView
+        android:id="@+id/imageView3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="TextView"
-        android:textSize="24sp" />
+        android:layout_height="181dp"
+        android:layout_marginTop="30dp"
+        app:srcCompat="@drawable/ieventbe2" />
 
 
 </LinearLayout>

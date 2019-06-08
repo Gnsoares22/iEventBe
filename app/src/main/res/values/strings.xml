@@ -18,5 +18,16 @@
 
     </string-array>
 
+
+    <string-array name="Subeventos">
+
+        <item>Palestra</item>
+        <item>Cursos</item>
+        <item>WorkShop</item>
+        <item>Seminário</item>
+        <item>Outros</item>
+
+    </string-array>
+
 </resources>
 
