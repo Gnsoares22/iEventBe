@@ -23,6 +23,7 @@ import com.example.ieventbe.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,6 +36,7 @@ public class ConfirmacaoActivity extends AppCompatActivity {
     //variáveis globais para receber os parâmetros da UsuarioActivity
     String idBeacon = "";
     Integer idEvento = 0;
+
 
     FirebaseDatabase database;
 
@@ -99,6 +101,7 @@ public class ConfirmacaoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
                 ListaPresenca lista = new ListaPresenca();
                 lista.setId(UUID.randomUUID().toString());
                 lista.setNome(nome.getText().toString());
@@ -108,7 +111,7 @@ public class ConfirmacaoActivity extends AppCompatActivity {
                 lista.setHorachegada(hora_atual.toString());
                 lista.setHorasaida("------");
 
-                reference.child("ListaPresenca").child(lista.getId()).setValue(lista);
+                reference.child("ListaPresenca").setValue(lista);
 
                 Toast.makeText(ConfirmacaoActivity.this, "Sua presença foi salva na lista de presença do subevento :) !!!",
                         Toast.LENGTH_LONG).show();

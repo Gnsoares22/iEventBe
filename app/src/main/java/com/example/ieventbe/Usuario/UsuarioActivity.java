@@ -21,6 +21,10 @@ import com.example.ieventbe.Beacon.ConfirmacaoActivity;
 import com.example.ieventbe.LoginActivity;
 import com.example.ieventbe.R;
 import com.example.ieventbe.Sobre.SobreUsuarioActivity;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
 import org.altbeacon.beacon.BeaconManager;
@@ -33,9 +37,12 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer {
 
@@ -53,26 +60,43 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
     //formatar casas decimais para distancia do beacon
     DecimalFormat format = new DecimalFormat("0.00");
 
-    DateFormat formatDate = new SimpleDateFormat("HH:mm:ss");
-
     private boolean isConfirmandoPresenca = false;
     private Integer idEvento = 1000;
     private HashMap<String, Integer> eventosCadastrados = new HashMap<String, Integer>();
-    private Date ultimaNotificacao = null;
+
+    //data da ultima notificacao
+
+    private Date ultimaNotificacao = Calendar.getInstance().getTime();
+    DateFormat formatDate = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+
+
+
     private ArrayList<Integer> eventosConfirmados = new ArrayList<Integer>();
 
     private Integer getEventoByBeacon(String idBeacon){
         return eventosCadastrados.get(idBeacon);
     }
 
+
     private void salvarUltimaNotificacao(){
         ultimaNotificacao = new Date();
 
         //TODO: fazer um update no Firebase WHERE id do objeto ListaPresenca = idPresenca
 
-        Toast.makeText(UsuarioActivity.this, "Presença atualizada: "+formatDate.format(ultimaNotificacao),
+        FirebaseDatabase bd = FirebaseDatabase.getInstance();
+
+
+        DatabaseReference ref = bd.getReference();
+        Map<String, Object> map = new HashMap<>();
+        map.put("horasaida", formatDate.format(ultimaNotificacao).toString());
+        ref.child("ListaPresenca").updateChildren(map);
+
+        //horasaida
+
+        Toast.makeText(UsuarioActivity.this, "Presença atualizada: " + formatDate.format(ultimaNotificacao),
                 Toast.LENGTH_LONG).show();
     }
+
 
     private boolean isEventoConfirmado(Beacon beacon, Integer idEvento){
         for(Integer id: eventosConfirmados){

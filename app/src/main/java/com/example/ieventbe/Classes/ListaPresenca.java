@@ -8,7 +8,7 @@ public class ListaPresenca {
     private String numerocelular;
     private String datachegada;
     private String horachegada;
-    private String horasaidada;
+    private String horasaida;
 
     public String getId(){return id;}
 
@@ -55,11 +55,11 @@ public class ListaPresenca {
     }
 
     public String getHorasaida() {
-        return horasaidada;
+        return horasaida;
     }
 
     public void setHorasaida(String horasaida) {
-        this.horasaidada = horasaida;
+        this.horasaida = horasaida;
     }
 }
 
