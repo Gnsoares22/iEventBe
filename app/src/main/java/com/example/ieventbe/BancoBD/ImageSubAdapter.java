@@ -15,23 +15,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ieventbe.Classes.Evento;
+import com.example.ieventbe.Classes.SubEvento;
 import com.example.ieventbe.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> implements Filterable {
+public class ImageSubAdapter extends RecyclerView.Adapter<ImageSubAdapter.ImageViewHolder> implements Filterable {
 
     //variavel de contexto e lista
 
     private Context e_context;
-    private List<Evento> e_eventos;
-    private List<Evento> e_eventos_full;
+    private List<SubEvento> e_eventos;
+    private List<SubEvento> e_eventos_full;
     private OnItemClickListener e_listener;
 
 
-    public ImageAdapter(Context context, List<Evento> eventos) {
+    public ImageSubAdapter(Context context, List<SubEvento> eventos) {
 
         e_context = context;
         e_eventos = eventos;
@@ -43,7 +44,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     @Override
     public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View v = LayoutInflater.from(e_context).inflate(R.layout.imagem_evento, parent, false);
+        View v = LayoutInflater.from(e_context).inflate(R.layout.imagem_subevento, parent, false);
         return new ImageViewHolder(v);
 
     }
@@ -56,18 +57,19 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
         //coloca os atributos no banco alocado em cada parte da imagem_evento da RecycleView
 
-        Evento eventoatual = e_eventos.get(position);
-        holder.txtTituloEvento.setText(" Título do Evento: " + eventoatual.getTituloEvento());
-        holder.txtDescricaoEvento.setText(" Descrição do Evento: " + eventoatual.getDescricaoEvento());
-        holder.txtPeriodoEvento.setText(" Período do evento: " + eventoatual.getPeriodoEvento());
-        holder.txtEventoOrganizador.setText(" Organizador do evento: " + eventoatual.getOrganizadorEvento());
+
+        SubEvento sub = e_eventos.get(position);
+        holder.txtResSub.setText(" Responsável: " + sub.getSub_responsavel());
+        holder.txtLocSub.setText(" Local: " + sub.getSub_local_atividades());
+        holder.txtMinSub.setText(" Minicurrículo: " + sub.getSub_minicurriculo());
+        holder.txtDescSub.setText(" Descrição: " + sub.getSub_descricacao());
 
         //recupera a imagem do banco para lista-lá
-        Picasso.with(e_context).load(eventoatual.getImagemEventoUrl()).fit().centerCrop()
-                .into(holder.mfotoevento);
+        Picasso.with(e_context).load(sub.getSub_foto()).fit().centerCrop()
+                .into(holder.msubfoto);
 
-        holder.txtEstado.setText("Estado: " + eventoatual.getEstadoEvento());
-        holder.txtCidade.setText("Cidade: " + eventoatual.getCidadeEvento());
+        holder.txtPerSub.setText("Periodo: " + sub.getSub_periodo());
+        holder.txtsubtipo.setText("Tipo: " + sub.getSub_tipo());
 
         //Segunda opção de menu
 
@@ -140,7 +142,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
-            List<Evento> eventosfiltrados = new ArrayList<>();
+            List<SubEvento> eventosfiltrados = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
 
@@ -150,11 +152,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
                 String resultado = constraint.toString().toLowerCase().trim();
 
-                for (Evento item : e_eventos_full) {
+                for (SubEvento item : e_eventos_full) {
 
-                    if (item.getTituloEvento().toLowerCase().contains(resultado) || item.getDescricaoEvento().toLowerCase().contains(resultado)
-                            || item.getOrganizadorEvento().toLowerCase().contains(resultado) || item.getPeriodoEvento().toLowerCase().contains(resultado) ||
-                            item.getEstadoEvento().toLowerCase().contains(resultado) || item.getCidadeEvento().toLowerCase().contains(resultado)) {
+                    if (item.getSub_responsavel().toLowerCase().contains(resultado) || item.getSub_local_atividades().toLowerCase().contains(resultado)
+                            || item.getSub_minicurriculo().toLowerCase().contains(resultado) || item.getSub_descricacao().toLowerCase().contains(resultado) ||
+                            item.getSub_periodo().toLowerCase().contains(resultado) || item.getSub_tipo().toLowerCase().contains(resultado)) {
 
                         eventosfiltrados.add(item);
 
@@ -189,14 +191,13 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
         //variaveis que irão ser listadas através do que já está registrado no BD
 
-        public TextView txtTituloEvento;
-        public TextView txtDescricaoEvento;
-        public TextView txtPeriodoEvento;
-        public TextView txtEventoOrganizador;
-        public ImageView mfotoevento;
-        public TextView txtEstado;
-        public TextView txtCidade;
-        public TextView menu;
+        public TextView txtResSub;
+        public TextView txtLocSub;
+        public TextView txtMinSub;
+        public TextView txtDescSub;
+        public ImageView msubfoto;
+        public TextView txtPerSub;
+        public TextView txtsubtipo;
 
 
         //construtor da classe ImageViewHolder
@@ -207,13 +208,13 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             //recupera o id dos items do cardview (no imagem_evento.xml)
             // para formar os itens que serão listados
 
-            txtTituloEvento = itemView.findViewById(R.id.titulo_evento);
-            txtDescricaoEvento = itemView.findViewById(R.id.desc_evento);
-            txtPeriodoEvento = itemView.findViewById(R.id.per_evento);
-            txtEventoOrganizador = itemView.findViewById(R.id.org_evento);
-            mfotoevento = itemView.findViewById(R.id.foto_evento_upload);
-            txtEstado = itemView.findViewById(R.id.estado_evento);
-            txtCidade = itemView.findViewById(R.id.cidade_evento);
+            txtResSub = itemView.findViewById(R.id.subevento_res_evento);
+            txtLocSub = itemView.findViewById(R.id.subevento_loc_evento);
+            txtMinSub = itemView.findViewById(R.id.subevento_mini_evento);
+            txtDescSub = itemView.findViewById(R.id.subevento_desc_evento);
+            txtPerSub = itemView.findViewById(R.id.subevento_periodo_evento);
+            msubfoto = itemView.findViewById(R.id.foto_subevento_upload);
+            txtsubtipo = itemView.findViewById(R.id.subevento_tipo_evento);
             //menu = itemView.findViewById(R.id.menu_clica); //menu de opções e cada item da Recycleview
 
             itemView.setOnClickListener(this);
@@ -240,9 +241,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
             menu.setHeaderTitle("Selecione uma opção: ");
-           MenuItem editar =  menu.add(Menu.NONE, 1, 1, "Editar evento");
-           MenuItem deletar = menu.add(Menu.NONE, 2, 2, "Deletar evento");
-           MenuItem subevento = menu.add(Menu.NONE, 3, 3, "Sub eventos");
+           MenuItem editar =  menu.add(Menu.NONE, 1, 1, "Editar sub evento");
+           MenuItem deletar = menu.add(Menu.NONE, 2, 2, "Deletar sub evento");
+           MenuItem subevento = menu.add(Menu.NONE, 3, 3, "Lista de presença");
 
            editar.setOnMenuItemClickListener(this);
             deletar.setOnMenuItemClickListener(this);
@@ -267,7 +268,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                             e_listener.onDeleteClick(position);
                             return true;
                         case 3:
-                            e_listener.onSubClick(position);
+                            e_listener.onListClick(position);
                             return true;
                     }
                 }
@@ -285,7 +286,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
 
         void onDeleteClick(int position);
 
-        void onSubClick(int position);
+        void onListClick(int position);
 
     }
 

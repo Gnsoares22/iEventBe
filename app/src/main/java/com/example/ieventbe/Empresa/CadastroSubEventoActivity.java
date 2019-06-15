@@ -240,7 +240,7 @@ public class CadastroSubEventoActivity extends AppCompatActivity {
                                 public void run() {
                                     progresso.setProgress(0);
                                 }
-                            }, 500);
+                            }, 5000);
 
 
                             //método novo para armazenar imagens
@@ -291,7 +291,7 @@ public class CadastroSubEventoActivity extends AppCompatActivity {
 
                             //seta o tempo da barra de progresso até a foto ir para o firebase storage
 
-                            double progress = (100 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                             progresso.setProgress((int) progress);
 
                         }

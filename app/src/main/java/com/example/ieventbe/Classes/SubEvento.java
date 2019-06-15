@@ -2,13 +2,14 @@ package com.example.ieventbe.Classes;
 
 public class SubEvento {
 
-       private String sub_responsavel;
-       private String sub_local_atividades;
-       private String sub_minicurriculo;
-       private String sub_descricacao;
-       private String sub_periodo;
-       private String sub_foto;
-       private String sub_tipo;
+    private String sub_id;
+    private String sub_responsavel;
+    private String sub_local_atividades;
+    private String sub_minicurriculo;
+    private String sub_descricacao;
+    private String sub_periodo;
+    private String sub_foto;
+    private String sub_tipo;
 
     public SubEvento() {
 
@@ -18,45 +19,53 @@ public class SubEvento {
     //metodo pega todos itens da classe e salva no firebase
 
     public SubEvento(String res, String lca, String minic, String desc, String per, String foto,
-                     String tipo){
+                     String tipo) {
 
-        if(res.trim().equals("")){
+        if (res.trim().equals("")) {
 
             res = "Sub evento sem responsável";
 
         }
 
-        if(lca.trim().equals("")){
+        if (lca.trim().equals("")) {
 
             lca = "Evento sem local";
 
         }
 
-        if(minic.trim().equals("")){
+        if (minic.trim().equals("")) {
 
             minic = "Sem minicorriculo";
 
         }
 
-        if(desc.trim().equals("")){
+        if (desc.trim().equals("")) {
 
             desc = "Sub evento sem descricao";
 
         }
 
-        if(per.trim().equals("")){
+        if (per.trim().equals("")) {
 
             per = "Evento sem periodo";
         }
 
-            sub_responsavel = res;
-            sub_local_atividades = lca;
-            sub_minicurriculo = minic;
-            sub_descricacao = desc;
-            sub_periodo = per;
-            sub_foto = foto;
-            sub_tipo = tipo;
+        sub_responsavel = res;
+        sub_local_atividades = lca;
+        sub_minicurriculo = minic;
+        sub_descricacao = desc;
+        sub_periodo = per;
+        sub_foto = foto;
+        sub_tipo = tipo;
 
+    }
+
+    public String getSub_id() {
+        return sub_id;
+    }
+
+    public void setSub_id(String sub_id) {
+        this.sub_id = sub_id;
     }
 
     public String getSub_responsavel() {
@@ -75,12 +84,12 @@ public class SubEvento {
         this.sub_local_atividades = sub_local_atividades;
     }
 
-    public String getSub_minicorriculo() {
+    public String getSub_minicurriculo() {
         return sub_minicurriculo;
     }
 
-    public void setSub_minicorriculo(String sub_minicorriculo) {
-        this.sub_minicurriculo = sub_minicorriculo;
+    public void setSub_minicurriculo(String sub_minicurriculo) {
+        this.sub_minicurriculo = sub_minicurriculo;
     }
 
     public String getSub_descricacao() {

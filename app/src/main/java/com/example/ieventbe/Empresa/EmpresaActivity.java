@@ -80,6 +80,18 @@ public class EmpresaActivity extends AppCompatActivity {
             }
         });
 
+        //Quando o usuário clicar na lista de subeventos
+
+        listasubevento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(EmpresaActivity.this, ListaSubeventosActivity.class);
+                startActivity(i);
+
+            }
+        });
+
 
 
 

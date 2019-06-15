@@ -23,79 +23,78 @@
             android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/foto_evento_upload"
+            android:id="@+id/foto_subevento_upload"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginTop="10dp"
             android:adjustViewBounds="true" />
 
-
         <TextView
-            android:id="@+id/titulo_evento"
+            android:id="@+id/subevento_res_evento"
             android:layout_width="349dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Titulo do evento"
+            android:text="Responsável pelo sub evento"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/desc_evento"
+            android:id="@+id/subevento_loc_evento"
             android:layout_width="348dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Descrição do evento"
+            android:text="Local das atividades"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/per_evento"
+            android:id="@+id/subevento_mini_evento"
             android:layout_width="348dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Periodo do evento"
+            android:text="Minicurrículo"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/org_evento"
+            android:id="@+id/subevento_desc_evento"
             android:layout_width="348dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Organizador do evento"
+            android:text="Descrição sub evento"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
 
         <TextView
-            android:id="@+id/estado_evento"
+            android:id="@+id/subevento_periodo_evento"
             android:layout_width="347dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Estado do evento"
+            android:text="Período do sub evento"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 
 
         <TextView
-            android:id="@+id/cidade_evento"
+            android:id="@+id/subevento_tipo_evento"
             android:layout_width="346dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
             android:gravity="center"
-            android:text="Cidade do evento"
+            android:text="Tipo Sub evento"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 

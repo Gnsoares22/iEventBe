@@ -13,13 +13,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.ieventbe.BancoBD.ImageAdapter;
+import com.example.ieventbe.BancoBD.ImageSubAdapter;
 import com.example.ieventbe.Classes.Evento;
+import com.example.ieventbe.Classes.SubEvento;
 import com.example.ieventbe.R;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -33,67 +34,67 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListaEventosActivity extends AppCompatActivity implements ImageAdapter.OnItemClickListener {
+public class ListaSubeventosActivity extends AppCompatActivity implements ImageSubAdapter.OnItemClickListener {
 
     private RecyclerView recyclerView;
-    private ImageAdapter adapter;
+    private ImageSubAdapter adaptersub;
 
     private ProgressBar progressc;
 
     private ValueEventListener mDBListener;
     private FirebaseStorage fotos;
     private DatabaseReference DatabaseRef;
-    private List<Evento> eventos;
-
+    private List<SubEvento> subeventos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lista_eventos);
+        setContentView(R.layout.activity_lista_subeventos);
 
-        getSupportActionBar().setTitle("Lista de eventos");
+        getSupportActionBar().setTitle("Lista de sub eventos");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
 
         //Lógica da lista aqui em baixo
 
-        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView = findViewById(R.id.recycler_view_sub);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         progressc = findViewById(R.id.progress_circulo);
 
-        eventos = new ArrayList<>();
+        subeventos = new ArrayList<>();
 
-        adapter = new ImageAdapter(ListaEventosActivity.this,eventos);
+        adaptersub = new ImageSubAdapter(ListaSubeventosActivity.this,subeventos);
 
         fotos = FirebaseStorage.getInstance();
 
-        DatabaseRef = FirebaseDatabase.getInstance().getReference("eventos");
+        DatabaseRef = FirebaseDatabase.getInstance().getReference("subeventos");
 
-      mDBListener =  DatabaseRef.addValueEventListener(new ValueEventListener() {
+        mDBListener =  DatabaseRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                eventos.clear();
+                subeventos.clear();
 
                 for(DataSnapshot postSnapshot: dataSnapshot.getChildren()){
 
-                    Evento evento = postSnapshot.getValue(Evento.class);
-                    evento.setId(postSnapshot.getKey());
-                    eventos.add(evento);
+                    SubEvento sub = postSnapshot.getValue(SubEvento.class);
+                    sub.setSub_id(postSnapshot.getKey());
+                    subeventos.add(sub);
+
+                    progressc.setVisibility(View.INVISIBLE);
 
                 }
 
-                adapter.notifyDataSetChanged();
+                adaptersub.notifyDataSetChanged();
 
-                adapter = new ImageAdapter(ListaEventosActivity.this,eventos);
+                adaptersub = new ImageSubAdapter(ListaSubeventosActivity.this,subeventos);
 
-                recyclerView.setAdapter(adapter);
-                progressc.setVisibility(View.INVISIBLE);
+                recyclerView.setAdapter(adaptersub);
 
-                adapter.setOnItemClickListener(ListaEventosActivity.this);
+              adaptersub.setOnItemClickListener(ListaSubeventosActivity.this);
 
 
             }
@@ -101,7 +102,7 @@ public class ListaEventosActivity extends AppCompatActivity implements ImageAdap
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                Toast.makeText(ListaEventosActivity.this,databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ListaSubeventosActivity.this,databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                 progressc.setVisibility(View.INVISIBLE);
 
             }
@@ -144,7 +145,7 @@ public class ListaEventosActivity extends AppCompatActivity implements ImageAdap
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
+                adaptersub.getFilter().filter(newText);
                 return false;
             }
         });
@@ -152,10 +153,9 @@ public class ListaEventosActivity extends AppCompatActivity implements ImageAdap
         return true;
     }
 
-
     @Override
     public void onItemClick(int position) {
-        //somente pega a posição
+
     }
 
     @Override
@@ -163,15 +163,14 @@ public class ListaEventosActivity extends AppCompatActivity implements ImageAdap
 
         Toast.makeText(getApplicationContext(),"Em Breve",Toast.LENGTH_LONG).show();
 
-
     }
 
     @Override
     public void onDeleteClick(int position) {
 
-        Evento eventoselecionado = eventos.get(position);
-        final String idselecionado = eventoselecionado.getId();
-        StorageReference imageref = fotos.getReferenceFromUrl(eventoselecionado.getImagemEventoUrl());
+        SubEvento subselecionado = subeventos.get(position);
+        final String idselecionado = subselecionado.getSub_id();
+        StorageReference imageref = fotos.getReferenceFromUrl(subselecionado.getSub_foto());
 
 
         imageref.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -180,14 +179,13 @@ public class ListaEventosActivity extends AppCompatActivity implements ImageAdap
 
                 DatabaseRef.child(idselecionado).removeValue();
 
-                Toast.makeText(getApplicationContext(),"Evento Deletado !!!!",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Sub evento Deletado !!!!",Toast.LENGTH_LONG).show();
 
 
             }
         });
 
     }
-
 
     @Override
     protected void onDestroy() {
@@ -197,12 +195,9 @@ public class ListaEventosActivity extends AppCompatActivity implements ImageAdap
     }
 
     @Override
-    public void onSubClick(int position) {
+    public void onListClick(int position) {
 
-        //vai para os sub eventos listados
-
-        Intent i = new Intent(ListaEventosActivity.this, ListaSubeventosActivity.class);
-        startActivity(i);
+        Toast.makeText(getApplicationContext(),"",Toast.LENGTH_LONG).show();
 
 
     }
