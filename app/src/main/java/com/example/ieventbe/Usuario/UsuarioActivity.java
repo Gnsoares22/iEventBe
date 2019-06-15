@@ -96,6 +96,8 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
 
       final DatabaseReference ref = bd.getReference("ListaPresenca");
 
+      //MANEIRA MAIS ELEGANTE DE ATUALIZAR O HORÁRIO NA LISTA
+
       ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
           @Override
