@@ -197,8 +197,8 @@ public class ListaSubeventosActivity extends AppCompatActivity implements ImageS
     @Override
     public void onListClick(int position) {
 
-        Toast.makeText(getApplicationContext(),"",Toast.LENGTH_LONG).show();
-
+        Intent i = new Intent(ListaSubeventosActivity.this, ListaPresencaActivity.class);
+        startActivity(i);
 
     }
 }

@@ -63,7 +63,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         holder.txtEventoOrganizador.setText(" Organizador do evento: " + eventoatual.getOrganizadorEvento());
 
         //recupera a imagem do banco para lista-lá
-        Picasso.with(e_context).load(eventoatual.getImagemEventoUrl()).fit().centerCrop()
+        Picasso.with(e_context).load(eventoatual.getImagemEventoUrl()).placeholder(R.drawable.sem_foto).fit().centerCrop()
                 .into(holder.mfotoevento);
 
         holder.txtEstado.setText("Estado: " + eventoatual.getEstadoEvento());
@@ -214,7 +214,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             mfotoevento = itemView.findViewById(R.id.foto_evento_upload);
             txtEstado = itemView.findViewById(R.id.estado_evento);
             txtCidade = itemView.findViewById(R.id.cidade_evento);
-            //menu = itemView.findViewById(R.id.menu_clica); //menu de opções e cada item da Recycleview
 
             itemView.setOnClickListener(this);
             itemView.setOnCreateContextMenuListener(this);

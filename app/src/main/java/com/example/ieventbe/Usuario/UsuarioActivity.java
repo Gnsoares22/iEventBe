@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.RemoteException;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,12 +19,17 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.ieventbe.Beacon.ConfirmacaoActivity;
+import com.example.ieventbe.Classes.Evento;
+import com.example.ieventbe.Classes.ListaPresenca;
 import com.example.ieventbe.LoginActivity;
 import com.example.ieventbe.R;
 import com.example.ieventbe.Sobre.SobreUsuarioActivity;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
@@ -41,6 +47,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -52,6 +59,8 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
     private static final String BEACON_ID = "003e8c80-ea01-4ebb-b888-78da19df9e55";
     protected BluetoothAdapter btfAdapter;
     private BeaconManager beaconManager = null;
+    private List<ListaPresenca> listapresenca;
+
 
     //guarda o id da lista de presença do usuário logado, após ele confirmar a presença
     // na ConfirmacaoActivity
@@ -69,7 +78,7 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
     private Date ultimaNotificacao = Calendar.getInstance().getTime();
     DateFormat formatDate = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
 
-
+    private String chave;
 
     private ArrayList<Integer> eventosConfirmados = new ArrayList<Integer>();
 
@@ -85,17 +94,40 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
 
         FirebaseDatabase bd = FirebaseDatabase.getInstance();
 
+      final DatabaseReference ref = bd.getReference("ListaPresenca");
 
-        DatabaseReference ref = bd.getReference();
-        Map<String, Object> map = new HashMap<>();
-        map.put("horasaida", formatDate.format(ultimaNotificacao).toString());
-        ref.child("ListaPresenca").updateChildren(map);
+      ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+          @Override
+          public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+              for (DataSnapshot datas : dataSnapshot.getChildren()) {
+
+                  String key = datas.getKey();
+                  Map<String, Object> childUpdates = new HashMap<>();
+                  childUpdates.put(key+"/horasaida/", formatDate.format(ultimaNotificacao));
+                  ref.updateChildren(childUpdates);
+
+              }
+
+          }
+
+
+          @Override
+          public void onCancelled(@NonNull DatabaseError databaseError) {
+
+          }
+      });
+
+
+      //  ref.child("ListaPresenca").child().child("horasaida").setValue(formatDate.format(ultimaNotificacao));
 
         //horasaida
 
         Toast.makeText(UsuarioActivity.this, "Presença atualizada: " + formatDate.format(ultimaNotificacao),
                 Toast.LENGTH_LONG).show();
     }
+
 
 
     private boolean isEventoConfirmado(Beacon beacon, Integer idEvento){

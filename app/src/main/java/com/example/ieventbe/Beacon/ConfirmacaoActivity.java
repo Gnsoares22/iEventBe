@@ -103,7 +103,6 @@ public class ConfirmacaoActivity extends AppCompatActivity {
 
 
                 ListaPresenca lista = new ListaPresenca();
-                lista.setId(UUID.randomUUID().toString());
                 lista.setNome(nome.getText().toString());
                 lista.setEmail(email.getText().toString());
                 lista.setNumerocelular(numero.toString());
@@ -111,7 +110,9 @@ public class ConfirmacaoActivity extends AppCompatActivity {
                 lista.setHorachegada(hora_atual.toString());
                 lista.setHorasaida("------");
 
-                reference.child("ListaPresenca").setValue(lista);
+                String id = reference.push().getKey();
+
+                reference.child("ListaPresenca").child(id).setValue(lista);
 
                 Toast.makeText(ConfirmacaoActivity.this, "Sua presença foi salva na lista de presença do subevento :) !!!",
                         Toast.LENGTH_LONG).show();

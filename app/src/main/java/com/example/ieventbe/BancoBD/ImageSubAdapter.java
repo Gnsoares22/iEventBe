@@ -14,7 +14,6 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.ieventbe.Classes.Evento;
 import com.example.ieventbe.Classes.SubEvento;
 import com.example.ieventbe.R;
 import com.squareup.picasso.Picasso;
@@ -65,7 +64,7 @@ public class ImageSubAdapter extends RecyclerView.Adapter<ImageSubAdapter.ImageV
         holder.txtDescSub.setText(" Descrição: " + sub.getSub_descricacao());
 
         //recupera a imagem do banco para lista-lá
-        Picasso.with(e_context).load(sub.getSub_foto()).fit().centerCrop()
+        Picasso.with(e_context).load(sub.getSub_foto()).placeholder(R.drawable.sem_foto).fit().centerCrop()
                 .into(holder.msubfoto);
 
         holder.txtPerSub.setText("Periodo: " + sub.getSub_periodo());
@@ -208,14 +207,13 @@ public class ImageSubAdapter extends RecyclerView.Adapter<ImageSubAdapter.ImageV
             //recupera o id dos items do cardview (no imagem_evento.xml)
             // para formar os itens que serão listados
 
-            txtResSub = itemView.findViewById(R.id.subevento_res_evento);
-            txtLocSub = itemView.findViewById(R.id.subevento_loc_evento);
-            txtMinSub = itemView.findViewById(R.id.subevento_mini_evento);
-            txtDescSub = itemView.findViewById(R.id.subevento_desc_evento);
-            txtPerSub = itemView.findViewById(R.id.subevento_periodo_evento);
-            msubfoto = itemView.findViewById(R.id.foto_subevento_upload);
+            txtResSub = itemView.findViewById(R.id.sub_res);
+            txtLocSub = itemView.findViewById(R.id.sub_local);
+            txtMinSub = itemView.findViewById(R.id.sub_min);
+            txtDescSub = itemView.findViewById(R.id.sub_des);
+            txtPerSub = itemView.findViewById(R.id.sub_per);
+            msubfoto = itemView.findViewById(R.id.sub_foto);
             txtsubtipo = itemView.findViewById(R.id.subevento_tipo_evento);
-            //menu = itemView.findViewById(R.id.menu_clica); //menu de opções e cada item da Recycleview
 
             itemView.setOnClickListener(this);
             itemView.setOnCreateContextMenuListener(this);
