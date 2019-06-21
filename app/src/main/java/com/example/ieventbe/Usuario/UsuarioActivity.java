@@ -73,12 +73,12 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
     private Integer idEvento = 1000;
     private HashMap<String, Integer> eventosCadastrados = new HashMap<String, Integer>();
 
-    //data da ultima notificacao
+    //data da ultima notificacao formatada
 
     private Date ultimaNotificacao = Calendar.getInstance().getTime();
     DateFormat formatDate = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
 
-    private String chave;
+    //LISTA DOS EVENTOS CONFIRMADOS
 
     private ArrayList<Integer> eventosConfirmados = new ArrayList<Integer>();
 
@@ -122,15 +122,12 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
       });
 
 
-      //  ref.child("ListaPresenca").child().child("horasaida").setValue(formatDate.format(ultimaNotificacao));
-
-        //horasaida
-
         Toast.makeText(UsuarioActivity.this, "Presença atualizada: " + formatDate.format(ultimaNotificacao),
                 Toast.LENGTH_LONG).show();
     }
 
 
+    //METODO BOOLEANO PARA VERIFICAR SE O EVENTO FOI CONFIRMADO
 
     private boolean isEventoConfirmado(Beacon beacon, Integer idEvento){
         for(Integer id: eventosConfirmados){
@@ -140,6 +137,9 @@ public class UsuarioActivity extends AppCompatActivity implements BeaconConsumer
         }
         return false;
     }
+
+
+    //MÉTODO ON CREATE
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override

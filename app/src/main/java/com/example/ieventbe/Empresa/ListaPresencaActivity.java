@@ -8,9 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.ieventbe.BancoBD.ImageSubAdapter;
@@ -82,6 +86,34 @@ public class ListaPresencaActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_filtro, menu);
+
+        MenuItem procurar = menu.findItem(R.id.menu_filtra);
+        SearchView procura = (SearchView) procurar.getActionView();
+
+        procura.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+
+        procura.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapterlp.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        return true;
     }
 
 
