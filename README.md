@@ -19,6 +19,8 @@ Android. </p>
 
 <h1> :white_check_mark: Considerações Finais </h1>
 
-Automatize seu evento já !!, vá de iEventBe.
+Automatize seu evento já !!, escolha iEventBe.
+
+No mais, com imensa satisfação deixo este projeto como um marco na minha vida de desenvolvedor !!!.
 
 Feito com muito :heart: e carinho por Gabriel Nascimento Soares
