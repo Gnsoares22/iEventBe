@@ -11,7 +11,7 @@ Android. </p>
 
 <ul>
   <li> IDE: Android Studio e base de dados NoSQL Fibase </li>
-  <li> Biblioteca adicionada no Gradle -> altbeacon (para fazer a comunicação do bluetooth com o Beacon) </li>
+  <li> Biblioteca adicionada no build.gradle -> altbeacon (para fazer a comunicação do bluetooth com o Beacon) </li>
   <li> Linguagens usadas para o desenvolvimento: Java </li>
 </ul>
 
